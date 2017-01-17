@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.masterihm.component.piemenu;
+package fr.masterihm.component;
 
-import fr.masterihm.component.piemenu.item.PieMenuItem;
+import fr.masterihm.component.piemenu.menu.PieMenuItem;
 import fr.masterihm.component.piemenu.menu.JPieMenu;
 import fr.masterihm.component.piemenu.menu.TooManyItemsException;
 import java.awt.event.ActionEvent;
@@ -83,7 +83,7 @@ public class TestFrame extends javax.swing.JFrame {
         item4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("3");
+                System.out.println("4");
             }
         });
         
@@ -91,7 +91,7 @@ public class TestFrame extends javax.swing.JFrame {
             pieMenu.addPieMenuItem(item1);
             pieMenu.addPieMenuItem(item2);
             pieMenu.addPieMenuItem(item3);
-            //pieMenu.addPieMenuItem(item4);
+            pieMenu.addPieMenuItem(item4);
         }catch(TooManyItemsException ex){
             ex.printStackTrace();
         }

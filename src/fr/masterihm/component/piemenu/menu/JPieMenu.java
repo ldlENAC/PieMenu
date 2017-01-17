@@ -5,7 +5,6 @@
  */
 package fr.masterihm.component.piemenu.menu;
 
-import fr.masterihm.component.piemenu.item.PieMenuItem;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -20,9 +19,11 @@ import javax.swing.JLayeredPane;
  */
 public class JPieMenu extends JLayeredPane{
 
+    private int nbItem;
+    private int slipAngle;
+    
     public JPieMenu(){
         super();
-        JButton button1 =new JButton("Toto");
     }
 
     
@@ -41,14 +42,14 @@ public class JPieMenu extends JLayeredPane{
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setBackground(new Color(0,0,0,0));
-        super.paint(g2d);
+        super.paint(g2d);               
     }
     
     
     
     private void computeAngles(){
-        int nbItem = getComponentCount();
-        int slipAngle = 360/nbItem;
+        nbItem = getComponentCount();
+        slipAngle = 360/nbItem;
         Component item;
         PieMenuItem pieMenuItem;
         for(int i = 0; i<nbItem; i++){
