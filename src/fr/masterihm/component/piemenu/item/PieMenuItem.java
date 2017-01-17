@@ -97,7 +97,7 @@ public class PieMenuItem extends JPanel {
     @Override
     public void paint(Graphics g) {
         //super.paintComponent(g);
-        System.out.println("paint");
+        System.out.println("paint SlipAngle: " + slipAngle + " OriginAngle: " + originAngle );
         Graphics2D g2d = (Graphics2D) g;
         g2d.setBackground(new Color(0, 0, 0, 0));
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -125,23 +125,25 @@ public class PieMenuItem extends JPanel {
     }
 
     private void raiseEvent(MouseEvent e) {
-        for (ActionListener eh : listeners) {
-            eh.actionPerformed(new ActionEvent(this, 0, null));
+        for (ActionListener al : listeners) {
+            al.actionPerformed(new ActionEvent(this, 0, null));
         }
     }
 
     @Override
     public boolean contains(int x, int y) {
-        float angle = (float) Math.toDegrees(Math.atan2(y - 100, x - 100));
+        boolean contain = false;
+        float angle = (float) Math.toDegrees(Math.atan2(100 - y, x - 100));
         if (angle < 0) {
             angle += 360;
         }
+        System.out.println("angle : " + angle);
         if (angle > originAngle && angle < originAngle + slipAngle) {
             if (Point2D.distance(100, 100, x, y) < 100) {
-                return true;
+                contain = true;
             }
         }
-        return false;
+        return contain;
     }
 
     @Override
