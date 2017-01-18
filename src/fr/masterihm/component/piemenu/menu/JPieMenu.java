@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -24,12 +25,6 @@ import javax.swing.PopupFactory;
  */
 public class JPieMenu extends JLayeredPane {
 
-    private enum STATE {
-        HIDDEN, VISIBLE;
-    }
-
-    private STATE state;
-
     private int nbItem;
     private int slipAngle;
 
@@ -40,13 +35,8 @@ public class JPieMenu extends JLayeredPane {
 
     public JPieMenu() {
         super();
-        init();
         autoClose = true;
         radius = 100;
-    }
-
-    private void init() {
-        this.state = STATE.HIDDEN;
     }
 
     public JPieMenu(int radius) {
@@ -64,6 +54,33 @@ public class JPieMenu extends JLayeredPane {
     }
 
     public void show(Component parent, int x, int y) {
+        parent.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("Toto");
+                popup.hide();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                //rien
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //rien
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                //rien
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                //rien
+            }
+        });
         popup = new PopupFactory().getPopup(parent, this, x - radius, y - radius);
         popup.show();
     }
@@ -140,6 +157,20 @@ public class JPieMenu extends JLayeredPane {
                 ((JPieMenuItem) getComponent(i)).setRadius(this.radius);
             }
         }
+    }
+
+    @Override
+    public boolean contains(int x, int y) {
+        boolean itContains = false;
+        if (Math.sqrt(Math.pow(x-radius, 2) + Math.pow(y-radius, 2)) < radius){
+            itContains = true;
+        }
+        return itContains;
+    }
+
+    @Override
+    public boolean contains(Point p) {
+        return contains(p.x, p.y);
     }
 
 }

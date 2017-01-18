@@ -10,6 +10,9 @@ import fr.masterihm.component.piemenu.menu.JPieMenu;
 import fr.masterihm.component.piemenu.menu.TooManyItemsException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 /**
  *
@@ -55,54 +58,55 @@ public class TestFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        JPieMenu pieMenu = new JPieMenu();
-        JPieMenuItem item1 = new JPieMenuItem("NEXT");
-        JPieMenuItem item2 = new JPieMenuItem("PREV");
-        JPieMenuItem item3 = new JPieMenuItem("DEL");
-        JPieMenuItem item4 = new JPieMenuItem("INSERT");
-        JPieMenuItem item5 = new JPieMenuItem("PRINT");
-        JPieMenuItem item6 = new JPieMenuItem("BOLD");
-        JPieMenuItem item7 = new JPieMenuItem("ITALIC");
-        JPieMenuItem item8 = new JPieMenuItem("HIGHLIGHT");
-        item1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("1");
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            JPieMenu pieMenu = new JPieMenu();
+            JPieMenuItem item1 = new JPieMenuItem("NEXT");
+            JPieMenuItem item2 = new JPieMenuItem("PREV");
+            JPieMenuItem item3 = new JPieMenuItem("DEL");
+            JPieMenuItem item4 = new JPieMenuItem("INSERT");
+            JPieMenuItem item5 = new JPieMenuItem("PRINT");
+            JPieMenuItem item6 = new JPieMenuItem("BOLD");
+            JPieMenuItem item7 = new JPieMenuItem("ITALIC");
+            JPieMenuItem item8 = new JPieMenuItem("HIGHLIGHT");
+            item1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("1");
+                }
+            });
+            item2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("2");
+                }
+            });
+            item3.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("3");
+                }
+            });
+            item4.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("4");
+                }
+            });
+
+            try {
+                pieMenu.addPieMenuItem(item1);
+                pieMenu.addPieMenuItem(item2);
+                pieMenu.addPieMenuItem(item3);
+                pieMenu.addPieMenuItem(item4);
+                pieMenu.addPieMenuItem(item5);
+                pieMenu.addPieMenuItem(item6);
+                pieMenu.addPieMenuItem(item7);
+                pieMenu.addPieMenuItem(item8);
+            } catch (TooManyItemsException ex) {
+                ex.printStackTrace();
             }
-        });
-        item2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("2");
-            }
-        });
-        item3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("3");
-            }
-        });
-        item4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("4");
-            }
-        });
-        
-        try{
-            pieMenu.addPieMenuItem(item1);
-            pieMenu.addPieMenuItem(item2);
-            pieMenu.addPieMenuItem(item3);
-            pieMenu.addPieMenuItem(item4);
-            pieMenu.addPieMenuItem(item5);
-            pieMenu.addPieMenuItem(item6);
-            pieMenu.addPieMenuItem(item7);
-            pieMenu.addPieMenuItem(item8);
-        }catch(TooManyItemsException ex){
-            ex.printStackTrace();
+            pieMenu.show(this, evt.getX(), evt.getY());
         }
-        
-        pieMenu.show(this, evt.getX(), evt.getY());
     }//GEN-LAST:event_formMouseClicked
 
     /**
