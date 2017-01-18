@@ -83,7 +83,7 @@ public class TestFrame extends javax.swing.JFrame {
         item4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("3");
+                System.out.println("4");
             }
         });
         

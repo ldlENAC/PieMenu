@@ -97,7 +97,7 @@ public class PieMenuItem extends JPanel {
     @Override
     public void paint(Graphics g) {
         //super.paintComponent(g);
-        System.out.println("paint SlipAngle: " + slipAngle + " OriginAngle: " + originAngle );
+        System.out.println("paint OriginAngle: " + originAngle + " slipAngle: " + slipAngle );
         Graphics2D g2d = (Graphics2D) g;
         g2d.setBackground(new Color(0, 0, 0, 0));
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -106,7 +106,9 @@ public class PieMenuItem extends JPanel {
         g2d.setColor(Color.BLACK);
         g2d.drawArc(0, 0, getWidth(), getHeight(), originAngle, slipAngle);
         g2d.drawLine(100, 100, (int) (100 + 100 * cosOrigin), (int) (100 + 100 * sinOrigin));
-        g2d.drawString(text, (int) (100 + 10 * cosOrigin), (int) (100 + 10 * sinOrigin));
+        
+        float middleAngle = originAngle + (slipAngle - originAngle)/2;
+        g2d.drawString(text, (int) (100 + 50 * Math.cos(Math.toRadians(middleAngle))), (int) (100 - 50 * Math.sin(Math.toRadians(middleAngle))));
         //g2d.drawString("String", 15, 15);
 
     }
