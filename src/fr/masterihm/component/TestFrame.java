@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.masterihm.component.piemenu;
+package fr.masterihm.component;
 
-import fr.masterihm.component.piemenu.item.PieMenuItem;
+import fr.masterihm.component.piemenu.menu.JPieMenuItem;
 import fr.masterihm.component.piemenu.menu.JPieMenu;
 import fr.masterihm.component.piemenu.menu.TooManyItemsException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.Popup;
-import javax.swing.PopupFactory;
+import java.awt.event.MouseEvent;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 /**
  *
@@ -19,11 +20,67 @@ import javax.swing.PopupFactory;
  */
 public class TestFrame extends javax.swing.JFrame {
 
+    JPieMenu pieMenu;
+    JPieMenuItem item1;
+    JPieMenuItem item2;
+    JPieMenuItem item3;
+    JPieMenuItem item4;
+    JPieMenuItem item5;
+    JPieMenuItem item6;
+    JPieMenuItem item7;
+    JPieMenuItem item8;
+
     /**
      * Creates new form TestFrame
      */
     public TestFrame() {
         initComponents();
+        pieMenu = new JPieMenu();
+        item1 = new JPieMenuItem("NEXT");
+        item2 = new JPieMenuItem("PREV");
+        item3 = new JPieMenuItem("DEL");
+        item4 = new JPieMenuItem("INSERT");
+        item5 = new JPieMenuItem("PRINT");
+        item6 = new JPieMenuItem("BOLD");
+        item7 = new JPieMenuItem("ITALIC");
+        item8 = new JPieMenuItem("HIGHLIGHT");
+        item1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("1");
+            }
+        });
+        item2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("2");
+            }
+        });
+        item3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("3");
+            }
+        });
+        item4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("4");
+            }
+        });
+
+        try {
+            pieMenu.addPieMenuItem(item1);
+            pieMenu.addPieMenuItem(item2);
+            pieMenu.addPieMenuItem(item3);
+            pieMenu.addPieMenuItem(item4);
+            pieMenu.addPieMenuItem(item5);
+            pieMenu.addPieMenuItem(item6);
+            pieMenu.addPieMenuItem(item7);
+            pieMenu.addPieMenuItem(item8);
+        } catch (TooManyItemsException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -57,48 +114,10 @@ public class TestFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        JPieMenu pieMenu = new JPieMenu();
-        PieMenuItem item1 = new PieMenuItem("PieMenuItem1");
-        PieMenuItem item2 = new PieMenuItem("PieMenuItem2");
-        PieMenuItem item3 = new PieMenuItem("PieMenuItem3");
-        PieMenuItem item4 = new PieMenuItem("PieMenuItem4");
-        item1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("1");
-            }
-        });
-        item2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("2");
-            }
-        });
-        item3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("3");
-            }
-        });
-        item4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("4");
-            }
-        });
-        
-        try{
-            pieMenu.addPieMenuItem(item1);
-            pieMenu.addPieMenuItem(item2);
-            pieMenu.addPieMenuItem(item3);
-            //pieMenu.addPieMenuItem(item4);
-        }catch(TooManyItemsException ex){
-            ex.printStackTrace();
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            System.out.println("Clic droit");
+            pieMenu.show(this, evt.getXOnScreen(), evt.getYOnScreen());
         }
-        
-        
-        Popup popup = new PopupFactory().getPopup(this, pieMenu, evt.getX()-100, evt.getY()-100);
-        popup.show();
     }//GEN-LAST:event_formMouseClicked
 
     /**

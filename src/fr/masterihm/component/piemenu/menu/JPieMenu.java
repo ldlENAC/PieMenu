@@ -5,34 +5,90 @@
  */
 package fr.masterihm.component.piemenu.menu;
 
-import fr.masterihm.component.piemenu.item.PieMenuItem;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import javax.swing.JButton;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JLayeredPane;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
 
 /**
  *
  * @author Geekette
  */
-public class JPieMenu extends JLayeredPane{
+public class JPieMenu extends JLayeredPane {
 
-    public JPieMenu(){
+    private int nbItem;
+    private int slipAngle;
+
+    private boolean autoClose;
+    private int radius;
+    private Component parent;
+
+    Popup popup;
+
+    ParentListener parentListener;
+
+    public JPieMenu() {
         super();
-        JButton button1 =new JButton("Toto");
+        autoClose = true;
+        radius = 100;
+        this.parentListener = new ParentListener(this);
     }
 
-    
-    public void addPieMenuItem(PieMenuItem item) throws TooManyItemsException{
-        if(getComponentCount() == 8) throw new TooManyItemsException();
-        this.add(item, getComponentCount());
+    public JPieMenu(int radius) {
+        super();
+        this.radius = radius;
+    }
+
+    public JPieMenu(boolean autoClose) {
+        this.autoClose = autoClose;
+    }
+
+    public JPieMenu(boolean autoClose, int radius) {
+        this.autoClose = autoClose;
+        this.radius = radius;
+    }
+
+    public void show(Component parent, int x, int y) {
+        if (this.parent != null) {
+            this.parent.removeMouseListener(parentListener);
+        }
+        this.parent = parent;
+        this.parent.addMouseListener(parentListener);
+        popup = new PopupFactory().getPopup(parent, this, x - radius, y - radius);
+        popup.show();
+    }
+
+    public void hide() {
+        popup.hide();
+    }
+
+    public void addPieMenuItem(JPieMenuItem item) throws TooManyItemsException {
+        if (getComponentCount() == 8) {
+            throw new TooManyItemsException();
+        }
+        item.setRadius(this.radius);
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (autoClose) {
+                    hide();
+                }
+            }
+        });
+        this.add(item);
         computeAngles();
     }
-    
-    public void removePieMenuItem(PieMenuItem item){
+
+    public void removePieMenuItem(JPieMenuItem item) {
         this.remove(item);
         computeAngles();
     }
@@ -40,32 +96,99 @@ public class JPieMenu extends JLayeredPane{
     @Override
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setBackground(new Color(0,0,0,0));
+        g2d.setBackground(new Color(0, 0, 0, 0));
         super.paint(g2d);
     }
-    
-    
-    
-    private void computeAngles(){
-        int nbItem = getComponentCount();
-        int slipAngle = 360/nbItem;
+
+    private void computeAngles() {
+        nbItem = getComponentCount();
+        slipAngle = 360 / nbItem;
         Component item;
-        PieMenuItem pieMenuItem;
-        for(int i = 0; i<nbItem; i++){
+        JPieMenuItem pieMenuItem;
+        for (int i = 0; i < nbItem; i++) {
             item = getComponent(i);
-            if(item instanceof PieMenuItem){
-               pieMenuItem = (PieMenuItem) item;
-               pieMenuItem.setOringinAngle(slipAngle*i);
-               pieMenuItem.setSlipAngle(slipAngle);
+            if (item instanceof JPieMenuItem) {
+                pieMenuItem = (JPieMenuItem) item;
+                pieMenuItem.setOringinAngle(slipAngle * i);
+                pieMenuItem.setSlipAngle(slipAngle);
             }
         }
     }
-    
+
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(200, 200);
+        return new Dimension(2 * radius, 2 * radius);
     }
-    
-    
-    
+
+    public boolean isAutoClose() {
+        return autoClose;
+    }
+
+    public void setAutoClose(boolean autoClose) {
+        this.autoClose = autoClose;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+        for (int i = 0; i < getComponentCount(); i++) {
+            if (getComponent(i) instanceof JPieMenuItem) {
+                ((JPieMenuItem) getComponent(i)).setRadius(this.radius);
+            }
+        }
+    }
+
+    @Override
+    public boolean contains(int x, int y) {
+        boolean itContains = false;
+        if (Math.sqrt(Math.pow(x - radius, 2) + Math.pow(y - radius, 2)) < radius) {
+            itContains = true;
+        }
+        return itContains;
+    }
+
+    @Override
+    public boolean contains(Point p) {
+        return contains(p.x, p.y);
+    }
+
+}
+
+class ParentListener implements MouseListener {
+
+    JPieMenu myMenu;
+
+    public ParentListener(JPieMenu menu) {
+        this.myMenu = menu;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        //rien
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        myMenu.hide();
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        //rien
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        //rien
+    }
+
 }
