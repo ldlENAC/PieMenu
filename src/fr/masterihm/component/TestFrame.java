@@ -10,8 +10,6 @@ import fr.masterihm.component.piemenu.menu.JPieMenu;
 import fr.masterihm.component.piemenu.menu.TooManyItemsException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.Popup;
-import javax.swing.PopupFactory;
 
 /**
  *
@@ -58,10 +56,14 @@ public class TestFrame extends javax.swing.JFrame {
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         JPieMenu pieMenu = new JPieMenu();
-        JPieMenuItem item1 = new JPieMenuItem("PieMenuItem1");
-        JPieMenuItem item2 = new JPieMenuItem("PieMenuItem2");
-        JPieMenuItem item3 = new JPieMenuItem("PieMenuItem3");
-        JPieMenuItem item4 = new JPieMenuItem("PieMenuItem4");
+        JPieMenuItem item1 = new JPieMenuItem("NEXT");
+        JPieMenuItem item2 = new JPieMenuItem("PREV");
+        JPieMenuItem item3 = new JPieMenuItem("DEL");
+        JPieMenuItem item4 = new JPieMenuItem("INSERT");
+        JPieMenuItem item5 = new JPieMenuItem("PRINT");
+        JPieMenuItem item6 = new JPieMenuItem("BOLD");
+        JPieMenuItem item7 = new JPieMenuItem("ITALIC");
+        JPieMenuItem item8 = new JPieMenuItem("HIGHLIGHT");
         item1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -92,6 +94,10 @@ public class TestFrame extends javax.swing.JFrame {
             pieMenu.addPieMenuItem(item2);
             pieMenu.addPieMenuItem(item3);
             pieMenu.addPieMenuItem(item4);
+            pieMenu.addPieMenuItem(item5);
+            pieMenu.addPieMenuItem(item6);
+            pieMenu.addPieMenuItem(item7);
+            pieMenu.addPieMenuItem(item8);
         }catch(TooManyItemsException ex){
             ex.printStackTrace();
         }

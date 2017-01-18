@@ -35,7 +35,7 @@ public class JPieMenuItem extends JPanel {
     private String text;
 
     private int radius;
-
+    
     private int originAngle;
     private int slipAngle;
     private double cosOrigin;
@@ -176,19 +176,21 @@ public class JPieMenuItem extends JPanel {
     protected void setRadius(int radius) {
         this.radius = radius;
     }
+    
+    
 
     private void computeCosSin() {
         this.cosOrigin = Math.cos(Math.toRadians(originAngle));
         this.sinOrigin = Math.sin(Math.toRadians(originAngle));
-        this.cosTarget = Math.cos(Math.toRadians(originAngle + slipAngle));
-        this.sinTarget = Math.sin(Math.toRadians(originAngle + slipAngle));
-        this.cosMiddle = Math.cos(Math.toRadians(originAngle + slipAngle / 2));
-        this.sinMiddle = Math.sin(Math.toRadians(originAngle + slipAngle / 2));
+        this.cosTarget = Math.cos(Math.toRadians(originAngle+slipAngle));
+        this.sinTarget = Math.sin(Math.toRadians(originAngle+slipAngle));
+        this.cosMiddle = Math.cos(Math.toRadians(originAngle+slipAngle/2));
+        this.sinMiddle = Math.sin(Math.toRadians(originAngle+slipAngle/2));
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(radius * 2, radius * 2);
+        return new Dimension(radius*2, radius*2);
     }
 
     public void addActionListener(ActionListener listener) {
@@ -223,7 +225,7 @@ public class JPieMenuItem extends JPanel {
         g2d.drawArc(0, 0, getWidth(), getHeight(), originAngle, slipAngle);
         g2d.drawLine(radius, radius, (int) (radius + radius * cosOrigin), (int) (radius + radius * sinOrigin));
         g2d.drawLine(radius, radius, (int) (radius + radius * cosTarget), (int) (radius + radius * sinTarget));
-        g2d.drawString(text, (int) (radius + 30 * cosMiddle), (int) (radius + 30 * sinMiddle));
+        g2d.drawString(text, (int) (radius + ((2*radius/3) * cosMiddle) - (text.length()*3)), (int) (radius - (2*radius/3) * sinMiddle));
         //System.out.println("Origin Angle : " + originAngle + " Slip ANgle : " + slipAngle);
     }
 
