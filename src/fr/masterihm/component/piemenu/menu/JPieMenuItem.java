@@ -24,7 +24,7 @@ import javax.swing.JPanel;
  *
  * @author Geekette
  */
-public class PieMenuItem extends JPanel {
+public class JPieMenuItem extends JPanel {
 
     private enum STATE {
         IDLE, HIGHLIGHTED
@@ -34,21 +34,27 @@ public class PieMenuItem extends JPanel {
 
     private String text;
 
+    private int radius;
+
     private int originAngle;
     private int slipAngle;
     private double cosOrigin;
     private double sinOrigin;
+    private double cosTarget;
+    private double sinTarget;
+    private double cosMiddle;
+    private double sinMiddle;
 
     private Color backgroundColor;
     private Color highlightColor;
 
     private List<ActionListener> listeners;
 
-    public PieMenuItem() {
+    public JPieMenuItem() {
         this("PieMenuItem");
     }
 
-    public PieMenuItem(String text) {
+    public JPieMenuItem(String text) {
         this.text = text;
         this.listeners = new ArrayList<>();
         this.originAngle = 0;
@@ -160,16 +166,29 @@ public class PieMenuItem extends JPanel {
 
     protected void setSlipAngle(int angle) {
         this.slipAngle = angle;
+        computeCosSin();
+    }
+
+    protected int getRadius() {
+        return radius;
+    }
+
+    protected void setRadius(int radius) {
+        this.radius = radius;
     }
 
     private void computeCosSin() {
         this.cosOrigin = Math.cos(Math.toRadians(originAngle));
         this.sinOrigin = Math.sin(Math.toRadians(originAngle));
+        this.cosTarget = Math.cos(Math.toRadians(originAngle + slipAngle));
+        this.sinTarget = Math.sin(Math.toRadians(originAngle + slipAngle));
+        this.cosMiddle = Math.cos(Math.toRadians(originAngle + slipAngle / 2));
+        this.sinMiddle = Math.sin(Math.toRadians(originAngle + slipAngle / 2));
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(199, 199);
+        return new Dimension(radius * 2, radius * 2);
     }
 
     public void addActionListener(ActionListener listener) {
@@ -202,19 +221,21 @@ public class PieMenuItem extends JPanel {
         g2d.fillArc(0, 0, getParent().getWidth(), getParent().getHeight(), originAngle, slipAngle);
         g2d.setColor(Color.BLACK);
         g2d.drawArc(0, 0, getWidth(), getHeight(), originAngle, slipAngle);
-        g2d.drawLine(100, 100, (int) (100 + 100 * cosOrigin), (int) (100 + 100 * sinOrigin));
-        g2d.drawString(text, (int) (100 + 10 * cosOrigin), (int) (100 + 10 * sinOrigin));
+        g2d.drawLine(radius, radius, (int) (radius + radius * cosOrigin), (int) (radius + radius * sinOrigin));
+        g2d.drawLine(radius, radius, (int) (radius + radius * cosTarget), (int) (radius + radius * sinTarget));
+        g2d.drawString(text, (int) (radius + 30 * cosMiddle), (int) (radius + 30 * sinMiddle));
+        //System.out.println("Origin Angle : " + originAngle + " Slip ANgle : " + slipAngle);
     }
 
     @Override
     public boolean contains(int x, int y) {
         boolean contains = false;
-        float angle = (float) Math.toDegrees(Math.atan2(100 - y, x - 100));
+        float angle = (float) Math.toDegrees(Math.atan2(radius - y, x - radius));
         if (angle < 0) {
             angle += 360;
         }
         if (angle > originAngle && angle < originAngle + slipAngle) {
-            if (Point2D.distance(100, 100, x, y) < 100) {
+            if (Point2D.distance(radius, radius, x, y) < radius) {
                 contains = true;
             }
         }

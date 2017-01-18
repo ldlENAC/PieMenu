@@ -5,7 +5,7 @@
  */
 package fr.masterihm.component;
 
-import fr.masterihm.component.piemenu.menu.PieMenuItem;
+import fr.masterihm.component.piemenu.menu.JPieMenuItem;
 import fr.masterihm.component.piemenu.menu.JPieMenu;
 import fr.masterihm.component.piemenu.menu.TooManyItemsException;
 import java.awt.event.ActionEvent;
@@ -58,10 +58,10 @@ public class TestFrame extends javax.swing.JFrame {
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         JPieMenu pieMenu = new JPieMenu();
-        PieMenuItem item1 = new PieMenuItem("PieMenuItem1");
-        PieMenuItem item2 = new PieMenuItem("PieMenuItem2");
-        PieMenuItem item3 = new PieMenuItem("PieMenuItem3");
-        PieMenuItem item4 = new PieMenuItem("PieMenuItem4");
+        JPieMenuItem item1 = new JPieMenuItem("PieMenuItem1");
+        JPieMenuItem item2 = new JPieMenuItem("PieMenuItem2");
+        JPieMenuItem item3 = new JPieMenuItem("PieMenuItem3");
+        JPieMenuItem item4 = new JPieMenuItem("PieMenuItem4");
         item1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,9 +96,7 @@ public class TestFrame extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         
-        
-        Popup popup = new PopupFactory().getPopup(this, pieMenu, evt.getX()-100, evt.getY()-100);
-        popup.show();
+        pieMenu.show(this, evt.getX(), evt.getY());
     }//GEN-LAST:event_formMouseClicked
 
     /**
