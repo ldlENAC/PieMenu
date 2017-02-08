@@ -31,6 +31,9 @@ public class JPieMenu extends JLayeredPane {
     private boolean autoClose;
     private int radius;
     private Component parent;
+    private enum States {VISIBLE, HIDDEN };
+    
+    private States state;
 
     Popup popup;
 
@@ -39,6 +42,7 @@ public class JPieMenu extends JLayeredPane {
     public JPieMenu() {
         super();
         autoClose = true;
+        state = States.HIDDEN;
         radius = 100;
         this.parentListener = new ParentListener(this);
     }
@@ -63,12 +67,31 @@ public class JPieMenu extends JLayeredPane {
         }
         this.parent = parent;
         this.parent.addMouseListener(parentListener);
-        popup = new PopupFactory().getPopup(parent, this, x - radius, y - radius);
-        popup.show();
+        
+        switch (state){
+            case VISIBLE:
+                popup.hide();
+                popup = new PopupFactory().getPopup(parent, this, x - radius, y - radius);
+                popup.show();                
+                break;
+            case HIDDEN:
+                state = States.VISIBLE;
+                popup = new PopupFactory().getPopup(parent, this, x - radius, y - radius);
+                popup.show();
+                break;            
+        }
     }
 
     public void hide() {
-        popup.hide();
+        switch (state){
+            case VISIBLE:
+                state = States.HIDDEN;
+                popup.hide();
+                break;
+            case HIDDEN:
+                state = States.HIDDEN;
+                break;            
+        }
     }
 
     public void addPieMenuItem(JPieMenuItem item) throws TooManyItemsException {

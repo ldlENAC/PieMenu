@@ -11,9 +11,11 @@ import fr.masterihm.component.piemenu.menu.TooManyItemsException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Timer;
@@ -29,15 +31,30 @@ public class DemoFrame extends javax.swing.JFrame {
     private final static String LHR = "Heathrow Airport";
     private final static String ARL = "Stockholm Arlanda Airport";
 
-    private JPieMenu pieMenu;
+    private JPieMenu pieMenuClock;
     private JPieMenuItem winnipegMenuItem;
     private JPieMenuItem montrealMenuItem;
     private JPieMenuItem londonMenuItem;
     private JPieMenuItem stockholmMenuItem;
     
+    private JPieMenu pieMenuTimer;
+    private JPieMenuItem startMenuItem;
+    private JPieMenuItem stopMenuItem;
+    private JPieMenuItem resetMenuItem;
+    
+    private enum StatesTimer  {
+        IDLE, COUNTING
+    };
+    
+    private StatesTimer stateTimer;
+    
+    private Timer timerTimer;
+    private int timerValue;
+    
+    
     private ZoneId zoneId;
     
-    private Timer timer;
+    private Timer timerClock;
 
     /**
      * Creates new form DemoFrame
@@ -45,7 +62,7 @@ public class DemoFrame extends javax.swing.JFrame {
     public DemoFrame() {
         initComponents();        
         try {
-            pieMenu = new JPieMenu();
+            pieMenuClock = new JPieMenu();
             winnipegMenuItem = new JPieMenuItem("YWG");
             winnipegMenuItem.addActionListener(new ActionListener() {
                 @Override
@@ -56,7 +73,7 @@ public class DemoFrame extends javax.swing.JFrame {
                 }
             });
 
-            pieMenu.addPieMenuItem(winnipegMenuItem);
+            pieMenuClock.addPieMenuItem(winnipegMenuItem);
 
             montrealMenuItem = new JPieMenuItem("YUL");
             montrealMenuItem.addActionListener(new ActionListener() {
@@ -67,7 +84,7 @@ public class DemoFrame extends javax.swing.JFrame {
                     airportName.setText(YUL);
                 }
             });
-            pieMenu.addPieMenuItem(montrealMenuItem);
+            pieMenuClock.addPieMenuItem(montrealMenuItem);
             londonMenuItem = new JPieMenuItem("LHR");
             londonMenuItem.addActionListener(new ActionListener() {
                 @Override
@@ -77,7 +94,7 @@ public class DemoFrame extends javax.swing.JFrame {
                     airportName.setText(LHR);
                 }
             });
-            pieMenu.addPieMenuItem(londonMenuItem);
+            pieMenuClock.addPieMenuItem(londonMenuItem);
             stockholmMenuItem = new JPieMenuItem("ARL");
             stockholmMenuItem.addActionListener(new ActionListener() {
                 @Override
@@ -87,24 +104,113 @@ public class DemoFrame extends javax.swing.JFrame {
                     airportName.setText(ARL);
                 }
             });
-            pieMenu.addPieMenuItem(stockholmMenuItem);            
+            pieMenuClock.addPieMenuItem(stockholmMenuItem);            
         } catch (TooManyItemsException ex) {
             Logger.getLogger(DemoFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        timer = new Timer(1000, new ActionListener() {
+        timerClock = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 timeLabel.setText(LocalTime.now(zoneId).format(DateTimeFormatter.ofPattern("HH:mm:ss")));
             }
         });
+        
+        
+        timerValue = 0;
+        stateTimer = StatesTimer.IDLE;
+        timerTimer = new Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                switch (stateTimer){
+                    case IDLE:
+                        //forbidden
+                        break;
+                    case COUNTING:
+                        timerValue++;
+                        counterLabel.setText(stringTimer(timerValue));
+                        //counterLabel.setText(stringTimer(timerValue));
+                        break;
+                }
+            }
+        });
+        
+        try {
+        pieMenuTimer = new JPieMenu();
+        startMenuItem = new JPieMenuItem("START");
+        startMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch (stateTimer){
+                    case IDLE:
+                        stateTimer = StatesTimer.COUNTING;
+                        timerTimer.start();
+                        break;
+                    case COUNTING:
+                        break;                    
+                }
+            }
+        });
+        pieMenuTimer.addPieMenuItem(startMenuItem);
+        
+        stopMenuItem = new JPieMenuItem("STOP");
+        stopMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch (stateTimer){
+                    case IDLE:
+                        break;
+                    case COUNTING:
+                        stateTimer = StatesTimer.IDLE;
+                        timerTimer.stop();
+                        break;
+                }
+            }
+        });
+        pieMenuTimer.addPieMenuItem(stopMenuItem);
+        
+        resetMenuItem = new JPieMenuItem("RESET");
+        resetMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch (stateTimer){
+                    case IDLE:
+                        stateTimer = StatesTimer.IDLE;
+                        timerTimer.stop();
+                        timerValue = 0;
+                        counterLabel.setText(stringTimer(timerValue));
+                        break;
+                    case COUNTING:
+                        stateTimer = StatesTimer.COUNTING;
+                        timerValue = 0;
+                        counterLabel.setText(stringTimer(timerValue));
+                        break;
+                }
+            }
+        });
+        pieMenuTimer.addPieMenuItem(resetMenuItem);
+        
+        } catch (TooManyItemsException ex){
+            Logger.getLogger(DemoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         init();
+    }
+    
+    private String stringTimer(int value){
+        Date date = new Date();
+        date.setTime(timerValue*10);
+        String result = new SimpleDateFormat("mm:ss:SS").format(date);
+        return result;
     }
 
     private void init(){
         zoneId = ZoneId.of("ECT", ZoneId.SHORT_IDS);
         airportName.setText(ARL);
         timeLabel.setText(LocalTime.now(zoneId).format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-        timer.start();        
+        timerClock.start();  
+        counterLabel.setText(stringTimer(timerValue));
+        
     }
     
     /**
@@ -122,6 +228,7 @@ public class DemoFrame extends javax.swing.JFrame {
         timeLabel = new javax.swing.JLabel();
         airportName = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        counterLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -168,15 +275,30 @@ public class DemoFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Airport time", airportTimePanel);
 
+        jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel2MouseClicked(evt);
+            }
+        });
+
+        counterLabel.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        counterLabel.setText("jLabel2");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 395, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(153, Short.MAX_VALUE)
+                .addComponent(counterLabel)
+                .addGap(128, 128, 128))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(115, Short.MAX_VALUE)
+                .addComponent(counterLabel)
+                .addGap(113, 113, 113))
         );
 
         jTabbedPane1.addTab("tab2", jPanel2);
@@ -185,11 +307,11 @@ public class DemoFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
 
         pack();
@@ -197,11 +319,19 @@ public class DemoFrame extends javax.swing.JFrame {
 
     private void airportTimePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_airportTimePanelMouseClicked
         if (evt.getButton() == MouseEvent.BUTTON3) {
-            pieMenu.show(this, evt.getXOnScreen(), evt.getYOnScreen());
+            pieMenuClock.show(this, evt.getXOnScreen(), evt.getYOnScreen());
         }else if(evt.getButton() == MouseEvent.BUTTON1){
-            pieMenu.hide();
+            pieMenuClock.hide();
         }
     }//GEN-LAST:event_airportTimePanelMouseClicked
+
+    private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            pieMenuTimer.show(this, evt.getXOnScreen(), evt.getYOnScreen());
+        }else if(evt.getButton() == MouseEvent.BUTTON1){
+            pieMenuTimer.hide();
+        }
+    }//GEN-LAST:event_jPanel2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -241,6 +371,7 @@ public class DemoFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel airportName;
     private javax.swing.JPanel airportTimePanel;
+    private javax.swing.JLabel counterLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTabbedPane jTabbedPane1;
