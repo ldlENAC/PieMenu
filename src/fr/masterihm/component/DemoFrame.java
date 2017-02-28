@@ -8,6 +8,7 @@ package fr.masterihm.component;
 import fr.masterihm.component.piemenu.menu.JPieMenu;
 import fr.masterihm.component.piemenu.menu.JPieMenuItem;
 import fr.masterihm.component.piemenu.menu.TooManyItemsException;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -138,6 +139,8 @@ public class DemoFrame extends javax.swing.JFrame {
         try {
         pieMenuTimer = new JPieMenu();
         startMenuItem = new JPieMenuItem("START");
+        startMenuItem.setBackgroundColor(Color.GREEN);
+        startMenuItem.setHighlightColor(Color.blue);
         startMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -154,6 +157,8 @@ public class DemoFrame extends javax.swing.JFrame {
         pieMenuTimer.addPieMenuItem(startMenuItem);
         
         stopMenuItem = new JPieMenuItem("STOP");
+        stopMenuItem.setBackgroundColor(Color.RED);
+        stopMenuItem.setHighlightColor(Color.blue);
         stopMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -170,6 +175,8 @@ public class DemoFrame extends javax.swing.JFrame {
         pieMenuTimer.addPieMenuItem(stopMenuItem);
         
         resetMenuItem = new JPieMenuItem("RESET");
+        resetMenuItem.setBackgroundColor(Color.YELLOW);
+        resetMenuItem.setHighlightColor(Color.blue);
         resetMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -229,6 +236,7 @@ public class DemoFrame extends javax.swing.JFrame {
         airportName = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         counterLabel = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -260,7 +268,7 @@ public class DemoFrame extends javax.swing.JFrame {
                     .addGroup(airportTimePanelLayout.createSequentialGroup()
                         .addGap(99, 99, 99)
                         .addComponent(timeLabel)))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(105, Short.MAX_VALUE))
         );
         airportTimePanelLayout.setVerticalGroup(
             airportTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,24 +292,31 @@ public class DemoFrame extends javax.swing.JFrame {
         counterLabel.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         counterLabel.setText("jLabel2");
 
+        jLabel2.setText("Right click on this window to display timer options");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(153, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(137, 137, 137)
                 .addComponent(counterLabel)
-                .addGap(128, 128, 128))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(108, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(81, 81, 81))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(115, Short.MAX_VALUE)
+                .addContainerGap(114, Short.MAX_VALUE)
                 .addComponent(counterLabel)
-                .addGap(113, 113, 113))
+                .addGap(100, 100, 100)
+                .addComponent(jLabel2))
         );
 
-        jTabbedPane1.addTab("tab2", jPanel2);
+        jTabbedPane1.addTab("Timer", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -373,6 +388,7 @@ public class DemoFrame extends javax.swing.JFrame {
     private javax.swing.JPanel airportTimePanel;
     private javax.swing.JLabel counterLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel timeLabel;

@@ -11,29 +11,31 @@ import java.beans.*;
  *
  * @author Geekette
  */
-public class JPieMenuBeanInfo extends SimpleBeanInfo {
+public class JPieMenuItemBeanInfo extends SimpleBeanInfo {
 
     // Bean descriptor//GEN-FIRST:BeanDescriptor
     /*lazy BeanDescriptor*/
     private static BeanDescriptor getBdescriptor(){
-        BeanDescriptor beanDescriptor = new BeanDescriptor  ( fr.masterihm.component.piemenu.menu.JPieMenu.class , null ); // NOI18N//GEN-HEADEREND:BeanDescriptor
+        BeanDescriptor beanDescriptor = new BeanDescriptor  ( fr.masterihm.component.piemenu.menu.JPieMenuItem.class , null ); // NOI18N//GEN-HEADEREND:BeanDescriptor
         // Here you can add code for customizing the BeanDescriptor.
 
         return beanDescriptor;     }//GEN-LAST:BeanDescriptor
 
 
     // Property identifiers//GEN-FIRST:Properties
-    private static final int PROPERTY_autoClose = 0;
-    private static final int PROPERTY_radius = 1;
+    private static final int PROPERTY_backgroundColor = 0;
+    private static final int PROPERTY_highlightColor = 1;
+    private static final int PROPERTY_text = 2;
 
     // Property array 
     /*lazy PropertyDescriptor*/
     private static PropertyDescriptor[] getPdescriptor(){
-        PropertyDescriptor[] properties = new PropertyDescriptor[2];
+        PropertyDescriptor[] properties = new PropertyDescriptor[3];
     
         try {
-            properties[PROPERTY_autoClose] = new PropertyDescriptor ( "autoClose", fr.masterihm.component.piemenu.menu.JPieMenu.class, "isAutoClose", "setAutoClose" ); // NOI18N
-            properties[PROPERTY_radius] = new PropertyDescriptor ( "radius", fr.masterihm.component.piemenu.menu.JPieMenu.class, "getRadius", "setRadius" ); // NOI18N
+            properties[PROPERTY_backgroundColor] = new PropertyDescriptor ( "backgroundColor", fr.masterihm.component.piemenu.menu.JPieMenuItem.class, "getBackgroundColor", "setBackgroundColor" ); // NOI18N
+            properties[PROPERTY_highlightColor] = new PropertyDescriptor ( "highlightColor", fr.masterihm.component.piemenu.menu.JPieMenuItem.class, "getHighlightColor", "setHighlightColor" ); // NOI18N
+            properties[PROPERTY_text] = new PropertyDescriptor ( "text", fr.masterihm.component.piemenu.menu.JPieMenuItem.class, "getText", "setText" ); // NOI18N
         }
         catch(IntrospectionException e) {
             e.printStackTrace();
@@ -43,34 +45,29 @@ public class JPieMenuBeanInfo extends SimpleBeanInfo {
         return properties;     }//GEN-LAST:Properties
 
     // EventSet identifiers//GEN-FIRST:Events
+    private static final int EVENT_actionListener = 0;
 
     // EventSet array
     /*lazy EventSetDescriptor*/
     private static EventSetDescriptor[] getEdescriptor(){
-        EventSetDescriptor[] eventSets = new EventSetDescriptor[0];//GEN-HEADEREND:Events
+        EventSetDescriptor[] eventSets = new EventSetDescriptor[1];
+    
+        try {
+            eventSets[EVENT_actionListener] = new EventSetDescriptor ( fr.masterihm.component.piemenu.menu.JPieMenuItem.class, "actionListener", java.awt.event.ActionListener.class, new String[] {"actionPerformed"}, "addActionListener", "removeActionListener" ); // NOI18N
+        }
+        catch(IntrospectionException e) {
+            e.printStackTrace();
+        }//GEN-HEADEREND:Events
         // Here you can add code for customizing the event sets array.
 
         return eventSets;     }//GEN-LAST:Events
 
     // Method identifiers//GEN-FIRST:Methods
-    private static final int METHOD_addPieMenuItem0 = 0;
-    private static final int METHOD_hide1 = 1;
-    private static final int METHOD_show2 = 2;
 
     // Method array 
     /*lazy MethodDescriptor*/
     private static MethodDescriptor[] getMdescriptor(){
-        MethodDescriptor[] methods = new MethodDescriptor[3];
-    
-        try {
-            methods[METHOD_addPieMenuItem0] = new MethodDescriptor(fr.masterihm.component.piemenu.menu.JPieMenu.class.getMethod("addPieMenuItem", new Class[] {fr.masterihm.component.piemenu.menu.JPieMenuItem.class})); // NOI18N
-            methods[METHOD_addPieMenuItem0].setDisplayName ( "" );
-            methods[METHOD_hide1] = new MethodDescriptor(fr.masterihm.component.piemenu.menu.JPieMenu.class.getMethod("hide", new Class[] {})); // NOI18N
-            methods[METHOD_hide1].setDisplayName ( "" );
-            methods[METHOD_show2] = new MethodDescriptor(fr.masterihm.component.piemenu.menu.JPieMenu.class.getMethod("show", new Class[] {java.awt.Component.class, int.class, int.class})); // NOI18N
-            methods[METHOD_show2].setDisplayName ( "" );
-        }
-        catch( Exception e) {}//GEN-HEADEREND:Methods
+        MethodDescriptor[] methods = new MethodDescriptor[0];//GEN-HEADEREND:Methods
         // Here you can add code for customizing the methods array.
 
         return methods;     }//GEN-LAST:Methods

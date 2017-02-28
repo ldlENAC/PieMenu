@@ -1,3 +1,8 @@
 Manifest-Version: 1.0
 X-COMMENT: Main-Class will be added automatically by build
 
+Name: fr.masterihm.component.piemenu.menu.JPieMenu.class
+Java-Bean: True
+
+Name: fr.masterihm.component.piemenu.menu.JPieMenuItem.class
+Java-Bean: true
